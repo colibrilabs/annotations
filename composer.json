@@ -1,0 +1,23 @@
+{
+  "name": "colibriphp/annotations",
+  "description": "Annotations Library",
+  "keywords": ["annotations"],
+  "authors": [
+    {
+      "name": "Ivan Hontarenko",
+      "email": "stewie.dev@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "type": "library",
+  "require": {
+    "php": ">=5.6",
+    "colibriphp/lexer": "~1.0",
+    "colibriphp/loader": "~0.1",
+    "colibriphp/cache": "~1.0",
+    "colibriphp/collection": "~0.1"
+  },
+  "autoload-dev": {
+    "psr-4": { "Colibri\\Annotations\\": "src" }
+  }
+}
