@@ -37,7 +37,7 @@ namespace A\B\C {
   
   /**
    * Class TestClass
-   * @Annotation\Property(userID = 7, req = {1,2,3})
+   * @Annotation\Property(userID:7, valid:true, req:{test:1, 2, 3, sub:@ORM\User({321, 321, 123, 12.3, 123, '/auth'})})
    */
   class TestClass
   {

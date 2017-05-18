@@ -62,6 +62,15 @@ class DocLexer extends AbstractLexer
   }
   
   /**
+   * @param $token
+   * @return mixed
+   */
+  public function getLiteral($token)
+  {
+    return str_replace(__NAMESPACE__, 'NS', parent::getLiteral($token));
+  }
+  
+  /**
    * @inheritDoc
    */
   protected function getNonCatchablePatterns()
@@ -90,19 +99,15 @@ class DocLexer extends AbstractLexer
     
     if (isset($this->map[$token])) {
       $type = $this->map[$token];
-    }
-    
-    if ($token[0] === '\'' || $token[0] === '"') {
-      $token = trim(trim($token, '"'), "'");
-      $type = static::T_STRING;
-    }
-    
-    if (ctype_alpha($token[0]) || '_' === $token[0] || '\\' === $token[0]) {
-      $type = static::T_IDENTIFIER;
-    }
-    
-    if (is_numeric($token)) {
-      $type = (strpos($token, '.') === false) ? static::T_INTEGER : static::T_FLOAT;
+    } else {
+      if ($token[0] === '\'' || $token[0] === '"') {
+        $token = trim(trim($token, '"'), "'");
+        $type = static::T_STRING;
+      } elseif (ctype_alpha($token[0]) || '_' === $token[0] || '\\' === $token[0]) {
+        $type = static::T_IDENTIFIER;
+      } elseif (is_numeric($token)) {
+        $type = (strpos($token, '.') === false) ? static::T_INTEGER : static::T_FLOAT;
+      }
     }
     
     return compact('token', 'type');

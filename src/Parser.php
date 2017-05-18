@@ -136,14 +136,12 @@ class Parser
     if (!$this->lexer->isNext(DocLexer::T_CLOSE_BRACE)) {
       $values = $this->parseValues();
       foreach ($values as $value) {
-        var_dump($value);
         if ($value instanceof \stdClass) {
           $annotation->{$value->name} = $value->value;
         } else {
           $annotation->{'value'}[] = $value;
         }
       }
-      
     }
     
     $this->toToken(DocLexer::T_CLOSE_BRACE);
@@ -205,7 +203,7 @@ class Parser
         return $this->parseScalarValue();
       
       default:
-        return null;
+        $this->syntaxError('either @Annotation, @Annotation({param:1}) or scalar types');
     }
     
   }
@@ -219,11 +217,11 @@ class Parser
     
     $token = $this->lexer->getToken();
     $identifier = $token['token'];
-    
+
     $value = new \stdClass();
   
-    $this->toToken(DocLexer::T_EQ);
-  
+    $this->toTokenAny([DocLexer::T_EQ, DocLexer::T_COLON]);
+
     $value->name = $identifier;
     $value->value = $this->parseValue();
     
@@ -239,8 +237,8 @@ class Parser
     $value = null;
   
     $this->toToken($token['type']);
-     
-    switch (true) {
+
+    switch ($token['type']) {
       case DocLexer::T_STRING:
         $value = $token['token'];
         break;
@@ -262,16 +260,38 @@ class Parser
       default:
         $this->syntaxError('scalar value');
     }
-    
+
     return $value;
   }
   
+  /**
+   * @return array
+   */
   protected function parseArray()
   {
-    $values = [__FILE__, __LINE__, __CLASS__, __METHOD__];
+    $values = [];
     
     $this->toToken(DocLexer::T_OPEN_CURLY_BRACE);
-    $this->lexer->shiftTo(DocLexer::T_CLOSE_CURLY_BRACE);
+    
+    if (!$this->lexer->isNext(DocLexer::T_CLOSE_CURLY_BRACE)) {
+      while (!$this->lexer->isNext(DocLexer::T_CLOSE_CURLY_BRACE)) {
+        if ($this->lexer->isNext(DocLexer::T_IDENTIFIER)) {
+          $keyValue = $this->parseKeyValue();
+          $values[$keyValue->name] = $keyValue->value;
+        } elseif ($this->lexer->isNextAny([DocLexer::T_COMMA])) {
+          $this->lexer->next();
+        } else {
+          $value = $this->parseValue();
+          if ($this->lexer->isNextAny([DocLexer::T_COLON, DocLexer::T_EQ])) {
+            $this->toTokenAny([DocLexer::T_COLON, DocLexer::T_EQ]);
+            $values[$value] = $this->parseValue();
+          } else {
+            $values[] = $value;
+          }
+        }
+      }
+    }
+    
     $this->toToken(DocLexer::T_CLOSE_CURLY_BRACE);
  
     return $values;
@@ -309,6 +329,16 @@ class Parser
   protected function toToken($token)
   {
     $this->lexer->toToken($token) || $this->syntaxError($token);
+  }
+  
+  /**
+   * @param array|integer[] $tokens
+   * @throws LexerException
+   */
+  protected function toTokenAny(array $tokens)
+  {
+    $this->lexer->toTokenAny($tokens)
+      || $this->syntaxError(sprintf('either %s', implode(' or ', array_map([$this->lexer, 'getLiteral'], $tokens))));
   }
   
   /**
