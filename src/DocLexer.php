@@ -62,6 +62,16 @@ class DocLexer extends AbstractLexer
   }
   
   /**
+   * @return array
+   */
+  function __debugInfo()
+  {
+    return array_map(function ($token) {
+      return sprintf('[%s] %s', $token['token'], $this->getLiteral($token['type']));
+    }, $this->getTokens());
+  }
+  
+  /**
    * @param $token
    * @return mixed
    */
@@ -84,7 +94,7 @@ class DocLexer extends AbstractLexer
   protected function getCatchablePatterns()
   {
     return [
-      '[a-z0-9_\\\][a-z0-9_\\\]*[a-z_][a-z0-9_]*',
+      '[a-z0-9_\\\][a-z0-9_\:\\\]*[a-z_][a-z0-9_]*',
       '(?:[0-9]+(?:[\.][0-9]+)*)',
       '\'(?:[^\'])*\'', '"(?:[^"])*"',
     ];

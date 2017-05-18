@@ -23,7 +23,7 @@ try {
   $parser->addNamespace('ORM\\Colibri');
   $parser->addNamespace('Om\\ORM\\Entity');
   
-  $parser->addAliasOf('Colibri\\Annotations\\Annotation', 'Ann');
+  $parser->addAliasOf('Colibri\\Annotations\\Annotation', 'Core');
   $parser->addAliasOf('Om\\ORM\\Entity', 'ORM');
 
   var_dump($parser->parse(trim($reflectionClass->getDocComment(), '/')));

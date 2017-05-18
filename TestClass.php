@@ -26,18 +26,22 @@ namespace Om\ORM\Entity{
 
 namespace A\B\C {
   
-  use Colibri\Annotations\Annotation as Ann;
+  use Colibri\Annotations\Annotation as Core;
   use Om\ORM\Entity as ORM;
-  
-//  * @Annotation\Property(name="test")
-//  * @ORM\User({321, 321, 123, 12.3, 123, '/auth'})
-// @Column(123, "/blog/:id", @Annotation\Property("test", @ORM\User({321, 321, 123, 12.3, 123, '/auth'})))
-  // @Annotation\Property(userID = 7, test=@Annotation\Property(123), 321, 333, 111)
-  
-  
+
   /**
    * Class TestClass
-   * @Annotation\Property(userID:7, valid:true, req:{test:1, 2, 3, sub:@ORM\User({321, 321, 123, 12.3, 123, '/auth'})})
+   * @Core\Property(name="username", required=true)
+   * @Core\Property(required=false, name="stewie.dev@gmail.com")
+   * @Core\Property(name="test", required=true)
+   * @Column({123, 456, 789}, test:1)
+   * @Column(route: "/blog/:id", @Annotation\Property("test", @ORM\User({321, 321, 123, 12.3, 123, '/auth'})))
+   * @Annotation\Property(userID:7, valid: true, req:{
+   *   "className": ORM\User::class,
+   *   "phpExtDir": PHP_EXTENSION_DIR
+   *   "test":1, 2, 3,
+   *   "sub":@ORM\User({321, 321, 123, 12.3, 123, '/auth'})
+   * })
    */
   class TestClass
   {

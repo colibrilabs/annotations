@@ -10,6 +10,14 @@ namespace Colibri\Annotations\Annotation;
 class Property
 {
   
+  /**
+   * @var string
+   */
   public $name;
+  
+  /**
+   * @var bool
+   */
+  public $required = false;
   
 }
