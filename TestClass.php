@@ -1,17 +1,5 @@
 <?php
 
-namespace ORM\Colibri
-{
-  
-  /**
-   * Class Column
-   * @Annotation
-   */
-  class Column {
-    
-  }
-}
-
 namespace Om\ORM\Entity{
   
   /**
@@ -27,23 +15,22 @@ namespace Om\ORM\Entity{
 namespace A\B\C {
   
   use Colibri\Annotations\Annotation as Core;
+  use Colibri\Annotations\Annotation\Property;
   use Om\ORM\Entity as ORM;
 
   /**
    * Class TestClass
    * @package A\B\C
-   * @Core\Property(name: PHP_OS, required: false)
-   * @Core\Property(name=\DateTime::RFC850)
-   * @Core\Property(name=PHP_SAPI, required=true)
-   * @Core\Property(required=false, name="stewie.dev@gmail.com")
-   * @Core\Property(name="test", required=true)
+   * @Column(route: "/auth/json", test: {1, @Property()})
+   *
+   * @Column(name: @Target({Core\Target::PROPERTY}), required=false)
+   *
    * @Column({123, 456, 789}, test:1)
-   * @Column(route: "/blog/:id", @Annotation\Property("test", @ORM\User({321, 321, 123, 12.3, 123, '/auth'})))
-   * @Annotation\Property(userID:7, valid: true, req:{
-   *   "className": ORM\User::class,
+   * @Column(route: "/blog/:id", @Column("test", @ORM\User({321, 321, 123, 12.3, 123, '/auth'})))
+   * @Column(userID:7, valid: true, req:{
    *   "phpExtDir": PHP_EXTENSION_DIR,
    *   "format": \DateTime::RFC850
-   *   "test":1, 2, 3,
+   *   "test":1, 2, 3, @Annotation(),
    *   "sub":@ORM\User({321, 321, 123, 12.3, 123, '/auth'})
    * })
    */

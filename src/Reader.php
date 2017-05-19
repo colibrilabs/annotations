@@ -54,7 +54,7 @@ class Reader implements ReaderInterface
    */
   public function getPropertyAnnotations(\ReflectionProperty $reflection)
   {
-    $this->parser->setTarget(Target::METHOD);
+    $this->parser->setTarget(Target::PROPERTY);
     $context = sprintf('%s::$%s;', $reflection->getDeclaringClass()->getName(), $reflection->getName());
   
     return $this->parser->parse($reflection->getDocComment(), $context);
@@ -100,6 +100,14 @@ class Reader implements ReaderInterface
     }
     
     return null;
+  }
+  
+  /**
+   * @inheritDoc
+   */
+  public function getParser()
+  {
+    return $this->parser;
   }
   
 }

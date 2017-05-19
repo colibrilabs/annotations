@@ -5,8 +5,8 @@ namespace Colibri\Annotations\Annotation;
 /**
  * Class Property
  * @package Colibri\Annotations\Annotation
- * @Annotation
- * @Target({Target::CLAZZ})
+ * @Annotation()
+ * @Target({Target::ANNOTATION})
  */
 final class Property
 {

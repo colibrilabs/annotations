@@ -2,6 +2,7 @@
 
 namespace Colibri\Annotations;
 
+use Colibri\Annotations\Annotation\Annotation;
 use Colibri\Annotations\Annotation\Enum;
 use Colibri\Annotations\Annotation\Target;
 
@@ -23,9 +24,9 @@ class Metadata
   protected $annotations;
   
   /**
-   * @var Parser
+   * @var ReaderInterface
    */
-  protected $parser;
+  protected $reader;
   
   /**
    * @var bool
@@ -50,15 +51,14 @@ class Metadata
   /**
    * AnnotationMetadata constructor.
    * @param \ReflectionClass $reflectionClass
-   * @param Parser $parser
    */
-  public function __construct(\ReflectionClass $reflectionClass, Parser $parser)
+  public function __construct(\ReflectionClass $reflectionClass)
   {
     $this->reflection = $reflectionClass;
-    $this->isAnnotation = strpos($reflectionClass->getDocComment(), '@Annotation') !== false;
+    $this->isAnnotation = (strpos($reflectionClass->getDocComment(), '@Annotation') !== false || $reflectionClass->getName() === Annotation::class);
     $this->hasConstructor = (null !== ($constructor = $reflectionClass->getConstructor()) && $constructor->getNumberOfParameters() > 0);
     
-    $this->parser = $parser;
+    $this->reader = new Reader();
   }
   
   /**
@@ -82,10 +82,7 @@ class Metadata
    */
   public function getAnnotations()
   {
-    $reflection = $this->getReflectionClass();
-    $context = sprintf('class %s {}', $reflection->getName());
-    
-    return $this->parser->parse($reflection->getDocComment(), $context);
+    return $this->reader->getClassAnnotations($this->getReflectionClass());
   }
   
   /**
@@ -94,7 +91,7 @@ class Metadata
   public function getTarget()
   {
     if (null === $this->target) {
-      foreach ($this->getAnnotations() as $annotation) {
+      foreach ($this->reader->getClassAnnotations($this->getReflectionClass()) as $annotation) {
         if ($annotation instanceof Target) {
           $this->target = $annotation; break;
         }
@@ -110,16 +107,11 @@ class Metadata
   public function getEnumeration()
   {
     if (null === $this->enumerations) {
-      $reflection = $this->getReflectionClass();
-  
+      
       $this->enumerations = [];
-      foreach ($reflection->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
+      foreach ($this->getReflectionClass()->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
         if (false !== strpos($property->getDocComment(), '@Enum')) {
-  
-          $this->parser->setTarget(Target::PROPERTY);
-
-          $context = sprintf('property %s::$%s', $reflection->getName(), $property->getName());
-          foreach ($this->parser->parse($property->getDocComment(), $context) as $annotation) {
+          foreach ($this->reader->getPropertyAnnotations($property) as $annotation) {
             if ($annotation instanceof Enum) {
               $this->enumerations[$property->getName()] = $annotation;
               break;

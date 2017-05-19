@@ -48,4 +48,9 @@ interface ReaderInterface
    */
   public function getPropertyAnnotation(\ReflectionProperty $reflectionProperty, $annotationClass);
   
+  /**
+   * @return Parser
+   */
+  public function getParser();
+  
 }

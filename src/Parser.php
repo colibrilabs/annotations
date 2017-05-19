@@ -2,6 +2,7 @@
 
 namespace Colibri\Annotations;
 
+use Colibri\Annotations\Annotation\Stub;
 use Colibri\Annotations\Annotation\Target;
 use Colibri\Lexer\LexerException;
 
@@ -28,11 +29,6 @@ class Parser
   protected $target;
   
   /**
-   * @var Parser
-   */
-  protected $innerParser;
-  
-  /**
    * @var array
    */
   protected $namespaces = [];
@@ -53,12 +49,18 @@ class Parser
   protected $ignoreNotImportedAnnotation = false;
   
   /**
+   * @var bool
+   */
+  protected $isInner = false;
+  
+  /**
    * Parser constructor.
    */
   public function __construct()
   {
     $this->lexer = new DocLexer(null);
     $this->annotationMetadata = StaticCollection::instance('metadata');
+    $this->addNamespace(sprintf('%s\\Annotation', __NAMESPACE__));
   }
   
   /**
@@ -101,6 +103,22 @@ class Parser
   public function setIgnoreNotImportedAnnotation($ignoreNotImportedAnnotation)
   {
     $this->ignoreNotImportedAnnotation = (boolean)$ignoreNotImportedAnnotation;
+  }
+  
+  /**
+   * @return bool
+   */
+  public function isInner()
+  {
+    return $this->isInner;
+  }
+  
+  /**
+   * @param bool $isInner
+   */
+  public function setIsInner($isInner)
+  {
+    $this->isInner = $isInner;
   }
   
   /**
@@ -154,6 +172,10 @@ class Parser
         continue;
       }
       
+      // this is mean is annotation start and it's outer.
+      // next annotation  occurrence will be inner
+      $this->setIsInner(false);
+      
       // After @ start parse annotation
       if (null !== ($annotation = $this->parseAnnotation())) {
         $annotations[] = $annotation;
@@ -180,35 +202,46 @@ class Parser
     
     if (!$this->classExists($className)) {
       if ($this->isIgnoreNotImportedAnnotation() === false) {
-        throw new AnnotationException(sprintf('Annotation @%s cannot be loaded', $identifier));
+        throw new AnnotationException(sprintf('Annotation @%s cannot be loaded in context %s',
+          $identifier, $this->getContext()));
+      } elseif ((ctype_upper($identifier[0]) || '\\' === $identifier[0])) {
+        $className = Stub::class;
+      } else {
+        return null;
       }
-      
-      return null;
     }
     
     $metadata = $this->getAnnotationMetadata($className);
-    
+  
+    $bitmask = $this->isInner() ? (Target::ANNOTATION | $this->getTarget()) : $this->getTarget();
+    $this->setIsInner(true);
+
     // Check target permissions if target allowed
-    if (null !== ($target = $metadata->getTarget())) {
-      if ($metadata->isAnnotation() && !($target->bitmask & $this->getTarget())) {
+    if (0 !== $bitmask && null !== ($target = $metadata->getTarget())) {
+      if (!($target->bitmask & $bitmask)) {
         throw new AnnotationException(sprintf('Annotation @%s is not allowed to used on %s. You can use only on %s',
           $className, $this->getContext(), $target->literal));
       }
     }
     
     $values = [];
-    // (name="username", params={1, 2, @Property(required=false, format=\DateTime::RFC850)})
+    
     $this->toToken(DocLexer::T_OPEN_BRACE);
     if (!$this->lexer->isNext(DocLexer::T_CLOSE_BRACE)) {
       $values = $this->normalizeValues($this->parseValues());
     }
     $this->toToken(DocLexer::T_CLOSE_BRACE);
+  
+    // Inject non founded identifier to Stub annotation
+    if ($className === Stub::class) {
+      $values['instead'] = $identifier;
+    }
     
     // Validate ENUM values on properties
     foreach ($metadata->getEnumeration() as $property => $enum) {
       if (isset($values[$property]) && !in_array($values[$property], $enum->values, true)) {
         $valueDumped = is_object($values[$property]) ? get_class($values[$property]) : var_export($values[$property], true);
-        throw new AnnotationException(sprintf("Enumeration error. Value '%s' is not allowed to used on %s::\$%s in context %s",
+        throw new AnnotationException(sprintf("Enumeration error. Value %s is not allowed to used on %s::\$%s in context %s",
           $valueDumped, $className, $property, $this->getContext()));
       }
     }
@@ -245,11 +278,11 @@ class Parser
 
       $this->toToken(DocLexer::T_COMMA);
       $value = $this->parseValue();
-  
+
       if (!is_array($value) && !is_object($value)) {
         $this->syntaxError('either one parameter or associative parameters', $this->lexer->getToken());
       }
-      
+
       $values[] = $value;
       
       if ($this->lexer->isNext(DocLexer::T_CLOSE_BRACE)) {
@@ -266,7 +299,7 @@ class Parser
   protected function parseValue()
   {
     $next = $this->lexer->getNext();
-    
+
     switch ($next['type']) {
       
       case DocLexer::T_AT:
@@ -300,7 +333,7 @@ class Parser
   {
     $currentToken = $this->lexer->getToken();
     $this->toToken(DocLexer::T_IDENTIFIER);
-
+    
     $isComparatorNext = $this->lexer->isNextAny([DocLexer::T_EQ, DocLexer::T_COLON]);
     $this->lexer->backToToken($currentToken['type']);
     
@@ -414,7 +447,7 @@ class Parser
       }
   
       if (!$this->classExists($className)) {
-        throw new AnnotationException(sprintf('Could not found class %s with constant %s', $className, $constantName));
+        throw new AnnotationException(sprintf("Could not found class '%s' with constant '%s'", $className, $constantName));
       }
   
       if ($constantName === 'class') {
@@ -425,7 +458,7 @@ class Parser
     }
     
     if (!defined($constant)) {
-      throw new AnnotationException(sprintf('Constant %s not defined', $constant));
+      throw new AnnotationException(sprintf("Constant '%s' not defined", $constant));
     }
     
     return constant($constant);
@@ -448,7 +481,7 @@ class Parser
   {
     if (!$this->annotationMetadata->has($className)) {
       $reflection = new \ReflectionClass($className);
-      $this->annotationMetadata->set($className, new Metadata($reflection, $this->getInnerParser()));
+      $this->annotationMetadata->set($className, new Metadata($reflection));
     }
     
     return $this->annotationMetadata->get($className);
@@ -457,15 +490,13 @@ class Parser
   /**
    * @return Parser
    */
-  public function getInnerParser()
+  public function getNewParser()
   {
-    if (null === $this->innerParser) {
-      $this->innerParser = new Parser();
-      $this->innerParser->setIgnoreNotImportedAnnotation(true);
-      $this->innerParser->addNamespace(sprintf('%s\\Annotation', __NAMESPACE__));
-    }
+    $parser = new Parser();
+    $parser->setIgnoreNotImportedAnnotation(true);
+    $parser->addNamespace(sprintf('%s\\Annotation', __NAMESPACE__));
     
-    return $this->innerParser;
+    return $parser;
   }
   
   /**

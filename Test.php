@@ -2,6 +2,7 @@
 
 namespace TestBoard;
 
+use Colibri\Annotations\Annotation\Target;
 use Colibri\Annotations\Parser;
 use Colibri\Annotations\Reader;
 
@@ -18,14 +19,15 @@ try {
   $parser->addNamespace('Colibri\\Annotations');
   $parser->addNamespace('ORM\\Colibri');
   $parser->addNamespace('Om\\ORM\\Entity');
-  $parser->addNamespace('Colibri\\Annotations\\Annotation');
-  
   $parser->addAliasOf('Colibri\\Annotations\\Annotation', 'Core');
-  $parser->addAliasOf('Om\\ORM\\Entity', 'ORM');
+
+  $parser->setTarget(Target::CLAZZ);
+  $parser->setIgnoreNotImportedAnnotation(true);
+  var_dump($parser->parse($reflection->getDocComment(), sprintf('class %s {}', $reflection->getName())));
   
   $reader = new Reader($parser);
   var_dump($reader->getClassAnnotations($reflection));
   
 } catch (\Throwable $exception) {
-  echo sprintf('%s [%s]', get_class($exception), $exception->getMessage()), PHP_EOL, $exception->getTraceAsString(); die();
+  echo sprintf('<pre><h3>%s [%s]</h3> <div>%s</div></pre>', get_class($exception), $exception->getMessage(), $exception->getTraceAsString()); die();
 }
