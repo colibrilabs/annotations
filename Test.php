@@ -2,8 +2,7 @@
 
 namespace TestBoard;
 
-use Colibri\Annotations\Annotation\Target;
-use Colibri\Annotations\Parser;
+use Colibri\Annotations\Annotation\Enum;
 use Colibri\Annotations\Reader;
 
 include_once __DIR__ . '/vendor/autoload.php';
@@ -14,19 +13,19 @@ error_reporting(E_ALL); ini_set('display_errors', 'On');
 $reflection = new \ReflectionClass(\A\B\C\TestClass::class);
 
 try {
-  
-  $parser = new Parser();
-  $parser->addNamespace('Colibri\\Annotations');
-  $parser->addNamespace('ORM\\Colibri');
-  $parser->addNamespace('Om\\ORM\\Entity');
-  $parser->addAliasOf('Colibri\\Annotations\\Annotation', 'Core');
 
-  $parser->setTarget(Target::CLAZZ);
-  $parser->setIgnoreNotImportedAnnotation(true);
-  var_dump($parser->parse($reflection->getDocComment(), sprintf('class %s {}', $reflection->getName())));
-  
-  $reader = new Reader($parser);
+  $reader = new Reader();
+  $reader->getParser()->addNamespace('A\B\C');
+    
   var_dump($reader->getClassAnnotations($reflection));
+  
+  foreach ($reflection->getMethods() as $method) {
+    var_dump($reader->getMethodAnnotations($method));
+  }
+  
+  foreach ($reflection->getProperties() as $property) {
+    var_dump($reader->getPropertyAnnotations($property));
+  }
   
 } catch (\Throwable $exception) {
   echo sprintf('<pre><h3>%s [%s]</h3> <div>%s</div></pre>', get_class($exception), $exception->getMessage(), $exception->getTraceAsString()); die();

@@ -77,7 +77,7 @@ class DocLexer extends AbstractLexer
    */
   public function getLiteral($token)
   {
-    return str_replace(__NAMESPACE__, 'NS', parent::getLiteral($token));
+    return str_replace(__NAMESPACE__ . '\\', null, parent::getLiteral($token));
   }
   
   /**

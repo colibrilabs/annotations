@@ -210,7 +210,7 @@ class Parser
         return null;
       }
     }
-    
+
     $metadata = $this->getAnnotationMetadata($className);
   
     $bitmask = $this->isInner() ? (Target::ANNOTATION | $this->getTarget()) : $this->getTarget();
@@ -321,7 +321,7 @@ class Parser
         return $this->parseScalarValue();
     }
   
-    $this->syntaxError('either @Annotation, @Annotation({param:1}) or scalar types');
+    $this->syntaxError('either @Annotation, Identifier or scalar types');
     
     return null;
   }
@@ -337,7 +337,7 @@ class Parser
     $isComparatorNext = $this->lexer->isNextAny([DocLexer::T_EQ, DocLexer::T_COLON]);
     $this->lexer->backToToken($currentToken['type']);
     
-    return $isComparatorNext ? $this->parseKeyValue() : $this->parseConstant();
+    return $isComparatorNext ? $this->parseKeyValue() : $this->parseClassIdentifier();
   }
   
   /**
@@ -356,7 +356,7 @@ class Parser
 
     $value->name = $identifier;
     $value->value = $this->isNext(DocLexer::T_IDENTIFIER)
-      ? $this->parseConstant() : $this->parseValue();
+      ? $this->parseClassIdentifier() : $this->parseValue();
 
     return $value;
   }
@@ -435,6 +435,15 @@ class Parser
    */
   protected function parseConstant()
   {
+    return __METHOD__;
+  }
+  
+  /**
+   * @return integer|float|string|array
+   * @throws AnnotationException
+   */
+  protected function parseClassIdentifier()
+  {
     $this->toToken(DocLexer::T_IDENTIFIER);
   
     $constant = $this->lexer->token['token'];
@@ -446,10 +455,22 @@ class Parser
         $className = $this->normalizeClassName($className);
       }
   
+      // Method calling
+      if ($this->lexer->isNext(DocLexer::T_OPEN_BRACE)) {
+        $metadata = $this->getAnnotationMetadata($className);
+        $class = $metadata->getReflectionClass();
+        foreach ($class->getMethods() as $method) {
+          if ($method->getName() === $constantName) {
+            $methodResult = $method->invoke($class->newInstanceWithoutConstructor());
+            die($methodResult);
+          }
+        }
+      }
+  
       if (!$this->classExists($className)) {
         throw new AnnotationException(sprintf("Could not found class '%s' with constant '%s'", $className, $constantName));
       }
-  
+      
       if ($constantName === 'class') {
         return $className;
       }

@@ -1,47 +1,44 @@
 <?php
 
-namespace Om\ORM\Entity{
+namespace A\B\C;
+
+use Colibri\Annotations\Annotation\Property;
+
+
+/**
+ * Class TestClass
+ * @package A\B\C
+ * @Column(route: "/auth/json", test: {1, @Property()})
+ *
+ * @Column(name: @Target({Target::PROPERTY}), required=false)
+ *
+ * @Column({123, 456, 789}, test:1)
+ * @Column(route: "/blog/:id", @Column("test", @ORM\User({321, 321, 123, 12.3, 123, '/auth'})))
+ * @Column(userID:7, valid: true, req:{
+ *   "phpExtDir": PHP_EXTENSION_DIR,
+ *   "format": \DateTime::RFC850,
+ *   "format2": TestClass::test,
+ *   "sub":@ORM\User({321, 321, 123, 12.3, 123, '/auth'})
+ * })
+ */
+class TestClass
+{
+  
+  const test = __FILE__;
   
   /**
-   * Class Column
-   * @Annotation
+   * @Enum({'F', 'M'})
+   * @Property(name=\DateTime::RFC850)
    */
-  class User {
-    
-  }
+  public $user;
   
-}
-
-namespace A\B\C {
-  
-  use Colibri\Annotations\Annotation as Core;
-  use Colibri\Annotations\Annotation\Property;
-  use Om\ORM\Entity as ORM;
-
   /**
-   * Class TestClass
-   * @package A\B\C
-   * @Column(route: "/auth/json", test: {1, @Property()})
-   *
-   * @Column(name: @Target({Core\Target::PROPERTY}), required=false)
-   *
-   * @Column({123, 456, 789}, test:1)
-   * @Column(route: "/blog/:id", @Column("test", @ORM\User({321, 321, 123, 12.3, 123, '/auth'})))
-   * @Column(userID:7, valid: true, req:{
-   *   "phpExtDir": PHP_EXTENSION_DIR,
-   *   "format": \DateTime::RFC850
-   *   "test":1, 2, 3, @Annotation(),
-   *   "sub":@ORM\User({321, 321, 123, 12.3, 123, '/auth'})
-   * })
+   * @Annotation({1, 2, 3, 4})
    */
-  class TestClass
+  public function test()
   {
-    
-    /**
-     * @Enum({'F', 'M'})
-     */
-    public $user;
-    
+    return __METHOD__;
   }
+  
 }
 
