@@ -2,6 +2,7 @@
 
 namespace Colibri\Annotations;
 
+use Colibri\Annotations\Annotation\Target;
 use Colibri\Lexer\LexerException;
 
 /**
@@ -15,6 +16,16 @@ class Parser
    * @var DocLexer
    */
   protected $lexer;
+  
+  /**
+   * @var string
+   */
+  protected $context;
+  
+  /**
+   * @var integer
+   */
+  protected $target;
   
   /**
    * @var Parser
@@ -35,6 +46,11 @@ class Parser
    * @var StaticCollection
    */
   protected $annotationMetadata;
+  
+  /**
+   * @var bool
+   */
+  protected $ignoreNotImportedAnnotation = false;
   
   /**
    * Parser constructor.
@@ -72,12 +88,54 @@ class Parser
   }
   
   /**
+   * @return bool
+   */
+  public function isIgnoreNotImportedAnnotation()
+  {
+    return (boolean)$this->ignoreNotImportedAnnotation;
+  }
+  
+  /**
+   * @param bool $ignoreNotImportedAnnotation
+   */
+  public function setIgnoreNotImportedAnnotation($ignoreNotImportedAnnotation)
+  {
+    $this->ignoreNotImportedAnnotation = (boolean)$ignoreNotImportedAnnotation;
+  }
+  
+  /**
+   * @return int
+   */
+  public function getTarget()
+  {
+    return (int)$this->target;
+  }
+  
+  /**
+   * @param int $target
+   */
+  public function setTarget($target)
+  {
+    $this->target = (int)$target;
+  }
+  
+  /**
+   * @return string
+   */
+  public function getContext()
+  {
+    return $this->context;
+  }
+  
+  /**
    * @param $input
+   * @param string $context
    * @return array
    */
-  public function parse($input)
+  public function parse($input, $context = null)
   {
-    $this->lexer->setInput($input);
+    $this->lexer->setInput(trim($input, '/'));
+    $this->context = $context;
 
     return $this->parseAnnotations();
   }
@@ -88,15 +146,19 @@ class Parser
   protected function parseAnnotations()
   {
     $annotations = [];
-    
-    while ($this->lexer->next()) {
-      // Search annotation start
+    $this->lexer->rewind();
+
+    do {
+      // Skip to next @ if it exist
       if ($this->lexer->token['type'] !== DocLexer::T_AT) {
         continue;
       }
       
-      $annotations[] = $this->parseAnnotation();
-    }
+      // After @ start parse annotation
+      if (null !== ($annotation = $this->parseAnnotation())) {
+        $annotations[] = $annotation;
+      }
+    } while ($this->lexer->next());
     
     return $annotations;
   }
@@ -117,28 +179,56 @@ class Parser
     }
     
     if (!$this->classExists($className)) {
-      throw new AnnotationException(sprintf('Annotation @%s cannot be loaded', $identifier));
+      if ($this->isIgnoreNotImportedAnnotation() === false) {
+        throw new AnnotationException(sprintf('Annotation @%s cannot be loaded', $identifier));
+      }
+      
+      return null;
     }
     
     $metadata = $this->getAnnotationMetadata($className);
-
-    $this->toToken(DocLexer::T_OPEN_BRACE);
-  
-    $values = [];
-    if (!$this->lexer->isNext(DocLexer::T_CLOSE_BRACE)) {
-      $values = $this->parseValues();
-      $values = $this->normalizeValues($values);
+    
+    // Check target permissions if target allowed
+    if (null !== ($target = $metadata->getTarget())) {
+      if ($metadata->isAnnotation() && !($target->bitmask & $this->getTarget())) {
+        throw new AnnotationException(sprintf('Annotation @%s is not allowed to used on %s. You can use only on %s',
+          $className, $this->getContext(), $target->literal));
+      }
     }
     
+    $values = [];
+    // (name="username", params={1, 2, @Property(required=false, format=\DateTime::RFC850)})
+    $this->toToken(DocLexer::T_OPEN_BRACE);
+    if (!$this->lexer->isNext(DocLexer::T_CLOSE_BRACE)) {
+      $values = $this->normalizeValues($this->parseValues());
+    }
     $this->toToken(DocLexer::T_CLOSE_BRACE);
+    
+    // Validate ENUM values on properties
+    foreach ($metadata->getEnumeration() as $property => $enum) {
+      if (isset($values[$property]) && !in_array($values[$property], $enum->values, true)) {
+        $valueDumped = is_object($values[$property]) ? get_class($values[$property]) : var_export($values[$property], true);
+        throw new AnnotationException(sprintf("Enumeration error. Value '%s' is not allowed to used on %s::\$%s in context %s",
+          $valueDumped, $className, $property, $this->getContext()));
+      }
+    }
     
     if ($metadata->hasConstructor()) {
       $annotation = $metadata->getReflectionClass()->newInstanceArgs($values);
     } else {
+      
       $annotation = $metadata->getReflectionClass()->newInstanceWithoutConstructor();
+      $propertyValues = [];
+      
       foreach ($values as $property => $value) {
-        $annotation->{$property} = $value;
+        if (is_numeric($property)) {
+          $propertyValues[$property] = $value;
+        } else {
+          $annotation->{$property} = $value;
+        }
       }
+      
+      $annotation->{'values'} = $propertyValues;
     }
     
     return $annotation;
@@ -175,9 +265,9 @@ class Parser
    */
   protected function parseValue()
   {
-    $peek = $this->lexer->getNext();
+    $next = $this->lexer->getNext();
     
-    switch ($peek['type']) {
+    switch ($next['type']) {
       
       case DocLexer::T_AT:
         $this->toToken(DocLexer::T_AT);
@@ -187,7 +277,7 @@ class Parser
         return $this->parseArray();
       
       case DocLexer::T_IDENTIFIER:
-        return $this->parseKeyValue();
+        return $this->parseArgument();
       
       case DocLexer::T_STRING:
       case DocLexer::T_INTEGER:
@@ -204,6 +294,20 @@ class Parser
   }
   
   /**
+   * @return array|float|int|\stdClass|string
+   */
+  public function parseArgument()
+  {
+    $currentToken = $this->lexer->getToken();
+    $this->toToken(DocLexer::T_IDENTIFIER);
+
+    $isComparatorNext = $this->lexer->isNextAny([DocLexer::T_EQ, DocLexer::T_COLON]);
+    $this->lexer->backToToken($currentToken['type']);
+    
+    return $isComparatorNext ? $this->parseKeyValue() : $this->parseConstant();
+  }
+  
+  /**
    * @return \stdClass
    */
   public function parseKeyValue()
@@ -212,13 +316,14 @@ class Parser
     
     $token = $this->lexer->getToken();
     $identifier = $token['token'];
-
+    
     $value = new \stdClass();
   
     $this->toTokenAny([DocLexer::T_EQ, DocLexer::T_COLON]);
 
     $value->name = $identifier;
-    $value->value = $this->parseValue();
+    $value->value = $this->isNext(DocLexer::T_IDENTIFIER)
+      ? $this->parseConstant() : $this->parseValue();
 
     return $value;
   }
@@ -279,8 +384,7 @@ class Parser
         $value = $this->parseValue();
         if ($this->lexer->isNextAny([DocLexer::T_COLON, DocLexer::T_EQ])) {
           $this->toTokenAny([DocLexer::T_COLON, DocLexer::T_EQ]);
-          $values[$value] = $this->isNext(DocLexer::T_IDENTIFIER)
-            ? $this->parseConstant() : $this->parseValue();
+          $values[$value] = $this->parseValue();
         } else {
           $values[] = $value;
         }
@@ -304,13 +408,17 @@ class Parser
     
     if (strpos($constant, '::')) {
       list($className, $constantName) = explode('::', $constant);
-  
-      if ($constantName === 'class') {
-        return $className;
-      }
       
       if ('\\' !== $className[0]) {
         $className = $this->normalizeClassName($className);
+      }
+  
+      if (!$this->classExists($className)) {
+        throw new AnnotationException(sprintf('Could not found class %s with constant %s', $className, $constantName));
+      }
+  
+      if ($constantName === 'class') {
+        return $className;
       }
       
       $constant = sprintf('%s::%s', $className, $constantName);
@@ -334,16 +442,30 @@ class Parser
   
   /**
    * @param $className
-   * @return AnnotationMetadata
+   * @return Metadata
    */
   protected function getAnnotationMetadata($className)
   {
     if (!$this->annotationMetadata->has($className)) {
       $reflection = new \ReflectionClass($className);
-      $this->annotationMetadata->set($className, new AnnotationMetadata($reflection));
+      $this->annotationMetadata->set($className, new Metadata($reflection, $this->getInnerParser()));
     }
     
     return $this->annotationMetadata->get($className);
+  }
+  
+  /**
+   * @return Parser
+   */
+  public function getInnerParser()
+  {
+    if (null === $this->innerParser) {
+      $this->innerParser = new Parser();
+      $this->innerParser->setIgnoreNotImportedAnnotation(true);
+      $this->innerParser->addNamespace(sprintf('%s\\Annotation', __NAMESPACE__));
+    }
+    
+    return $this->innerParser;
   }
   
   /**
@@ -397,10 +519,10 @@ class Parser
   {
     $token = empty($token) ? $this->lexer->getNext() : $token;
     $position = $token['position'];
-    
+
     throw new LexerException(sprintf(
-      "Syntax error. Expect %s got '%s' at position %d",
-      $this->lexer->getLiteral($expect), $token['token'], $position
+      "Syntax error. Expect %s got '%s' at position %d in context %s",
+      $this->lexer->getLiteral($expect), $token['token'], $position, $this->getContext()
     ));
   }
   

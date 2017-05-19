@@ -96,21 +96,19 @@
         },
         {
             "name": "colibriphp/lexer",
-            "version": "1.1.4",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/colibriphp/lexer.git",
-                "reference": "a663d7f2ea5701db67c68ab320a5d852949fd09a"
+                "reference": "12a481500aa1ef677a7483daca0981587157a428"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/colibriphp/lexer/zipball/a663d7f2ea5701db67c68ab320a5d852949fd09a",
-                "reference": "a663d7f2ea5701db67c68ab320a5d852949fd09a",
+                "url": "https://api.github.com/repos/colibriphp/lexer/zipball/12a481500aa1ef677a7483daca0981587157a428",
+                "reference": "12a481500aa1ef677a7483daca0981587157a428",
                 "shasum": ""
             },
             "require": {
-                "colibriphp/cache": "~1.0",
-                "colibriphp/loader": "~0.1",
                 "php": ">=5.6"
             },
             "type": "library",
@@ -133,7 +131,7 @@
             "keywords": [
                 "lexer"
             ],
-            "time": "2017-05-17 12:14:29"
+            "time": "2017-05-19 08:09:30"
         },
         {
             "name": "colibriphp/loader",

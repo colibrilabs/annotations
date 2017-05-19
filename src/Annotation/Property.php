@@ -6,8 +6,9 @@ namespace Colibri\Annotations\Annotation;
  * Class Property
  * @package Colibri\Annotations\Annotation
  * @Annotation
+ * @Target({Target::CLAZZ})
  */
-class Property
+final class Property
 {
   
   /**
@@ -17,6 +18,7 @@ class Property
   
   /**
    * @var bool
+   * @Enum({true, false})
    */
   public $required = false;
   
