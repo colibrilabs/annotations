@@ -17,7 +17,7 @@
     "colibriphp/cache": "~1.0",
     "colibriphp/collection": "~0.1"
   },
-  "autoload-dev": {
+  "autoload": {
     "psr-4": { "Colibri\\Annotations\\": "src" }
   }
 }
