@@ -433,23 +433,14 @@ class Parser
    * @return integer|float|string|array
    * @throws AnnotationException
    */
-  protected function parseConstant()
-  {
-    return __METHOD__;
-  }
-  
-  /**
-   * @return integer|float|string|array
-   * @throws AnnotationException
-   */
   protected function parseClassIdentifier()
   {
     $this->toToken(DocLexer::T_IDENTIFIER);
   
-    $constant = $this->lexer->token['token'];
+    $classIdentifier = $this->lexer->token['token'];
     
-    if (strpos($constant, '::')) {
-      list($className, $constantName) = explode('::', $constant);
+    if (strpos($classIdentifier, '::')) {
+      list($className, $identifierName) = explode('::', $classIdentifier);
       
       if ('\\' !== $className[0]) {
         $className = $this->normalizeClassName($className);
@@ -457,32 +448,30 @@ class Parser
   
       // Method calling
       if ($this->lexer->isNext(DocLexer::T_OPEN_BRACE)) {
-        $metadata = $this->getAnnotationMetadata($className);
-        $class = $metadata->getReflectionClass();
-        foreach ($class->getMethods() as $method) {
-          if ($method->getName() === $constantName) {
-            $methodResult = $method->invoke($class->newInstanceWithoutConstructor());
-            die($methodResult);
-          }
-        }
+        throw new AnnotationException('Method calling not supported yet. Please use class constants only for ClassIdentifier');
+      }
+      
+      // Class properties
+      if ('$' === $identifierName[0]) {
+        throw new AnnotationException('Class properties access not supported yet. Please use class constants only for ClassIdentifier');
       }
   
       if (!$this->classExists($className)) {
-        throw new AnnotationException(sprintf("Could not found class '%s' with constant '%s'", $className, $constantName));
+        throw new AnnotationException(sprintf("Could not found class '%s' with constant '%s'", $className, $identifierName));
       }
       
-      if ($constantName === 'class') {
+      if ($identifierName === 'class') {
         return $className;
       }
       
-      $constant = sprintf('%s::%s', $className, $constantName);
+      $classIdentifier = sprintf('%s::%s', $className, $identifierName);
     }
     
-    if (!defined($constant)) {
-      throw new AnnotationException(sprintf("Constant '%s' not defined", $constant));
+    if (!defined($classIdentifier)) {
+      throw new AnnotationException(sprintf("Constant '%s' not defined", $classIdentifier));
     }
     
-    return constant($constant);
+    return constant($classIdentifier);
   }
   
   /**

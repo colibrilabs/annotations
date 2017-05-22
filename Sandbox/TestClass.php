@@ -3,6 +3,7 @@
 namespace A\B\C;
 
 use Colibri\Annotations\Annotation\Property;
+use Colibri\Annotations\Annotation\Target;
 
 
 /**
@@ -33,7 +34,7 @@ class TestClass
   public $user;
   
   /**
-   * @Annotation({1, 2, 3, 4})
+   * @Target({1})
    */
   public function test()
   {
