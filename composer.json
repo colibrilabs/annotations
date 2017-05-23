@@ -12,10 +12,10 @@
   "type": "library",
   "require": {
     "php": ">=5.6",
-    "colibriphp/lexer": "~1.0",
-    "colibriphp/loader": "~0.1",
-    "colibriphp/cache": "~1.0",
-    "colibriphp/collection": "~0.1"
+    "colibrilabs/lexer": "~1.0",
+    "colibrilabs/loader": "~0.1",
+    "colibrilabs/cache": "~1.0",
+    "colibrilabs/collection": "~0.1"
   },
   "autoload": {
     "psr-4": { "Colibri\\Annotations\\": "src" }
