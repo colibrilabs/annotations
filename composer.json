@@ -1,5 +1,5 @@
 {
-  "name": "colibrilabs/annotations",
+  "name": "subapp/annotations",
   "description": "Annotations Library",
   "keywords": ["annotations"],
   "authors": [
@@ -12,10 +12,10 @@
   "type": "library",
   "require": {
     "php": ">=5.6",
-    "colibrilabs/lexer": "~1.0",
-    "colibrilabs/loader": "~1.2",
-    "colibrilabs/cache": "~1.0",
-    "colibrilabs/collection": "~0.2"
+    "subapp/lexer": "~1.0",
+    "subapp/loader": "~1.2",
+    "subapp/cache": "~1.0",
+    "subapp/collection": "~0.2"
   },
   "autoload": {
     "psr-4": { "Colibri\\Annotations\\": "src" }
