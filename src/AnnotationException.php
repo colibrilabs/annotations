@@ -1,10 +1,10 @@
 <?php
 
-namespace Colibri\Annotations;
+namespace Subapp\Annotations;
 
 /**
  * Class AnnotationException
- * @package Colibri\Annotations
+ * @package Subapp\Annotations
  */
 class AnnotationException extends \Exception
 {

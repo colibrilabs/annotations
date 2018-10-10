@@ -1,14 +1,14 @@
 <?php
 
-namespace Colibri\Annotations;
+namespace Subapp\Annotations;
 
-use Colibri\Annotations\Annotation\Stub;
-use Colibri\Annotations\Annotation\Target;
-use Colibri\Lexer\LexerException;
+use Subapp\Annotations\Annotation\Stub;
+use Subapp\Annotations\Annotation\Target;
+use Subapp\Lexer\LexerException;
 
 /**
  * Class Parser
- * @package Colibri\Annotations
+ * @package Subapp\Annotations
  */
 class Parser
 {

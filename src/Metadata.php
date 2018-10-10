@@ -1,14 +1,14 @@
 <?php
 
-namespace Colibri\Annotations;
+namespace Subapp\Annotations;
 
-use Colibri\Annotations\Annotation\Annotation;
-use Colibri\Annotations\Annotation\Enum;
-use Colibri\Annotations\Annotation\Target;
+use Subapp\Annotations\Annotation\Annotation;
+use Subapp\Annotations\Annotation\Enum;
+use Subapp\Annotations\Annotation\Target;
 
 /**
  * Class Metadata
- * @package Colibri\Annotations
+ * @package Subapp\Annotations
  */
 class Metadata
 {

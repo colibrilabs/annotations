@@ -1,10 +1,10 @@
 <?php
 
-namespace Colibri\Annotations\Annotation;
+namespace Subapp\Annotations\Annotation;
 
 /**
  * Class Enum
- * @package Colibri\Annotations\Annotation
+ * @package Subapp\Annotations\Annotation
  * @Annotation()
  * @Target({Target::PROPERTY})
  */

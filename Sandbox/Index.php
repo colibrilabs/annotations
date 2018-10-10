@@ -2,7 +2,7 @@
 
 namespace TestBoard;
 
-use Colibri\Annotations\Reader;
+use Subapp\Annotations\Reader;
 
 include_once __DIR__ . '/../vendor/autoload.php';
 include_once __DIR__ . '/TestClass.php';

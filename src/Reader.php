@@ -1,12 +1,12 @@
 <?php
 
-namespace Colibri\Annotations;
+namespace Subapp\Annotations;
 
-use Colibri\Annotations\Annotation\Target;
+use Subapp\Annotations\Annotation\Target;
 
 /**
  * Class Reader
- * @package Colibri\Annotations
+ * @package Subapp\Annotations
  */
 class Reader implements ReaderInterface
 {

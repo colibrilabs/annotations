@@ -1,12 +1,12 @@
 <?php
 
-namespace Colibri\Annotations;
+namespace Subapp\Annotations;
 
-use Colibri\Collection\ArrayCollection;
+use Subapp\Collection\ArrayCollection;
 
 /**
  * Class StaticCollection
- * @package Colibri\Annotations
+ * @package Subapp\Annotations
  */
 class StaticCollection extends ArrayCollection
 {

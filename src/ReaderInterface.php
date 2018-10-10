@@ -1,10 +1,10 @@
 <?php
 
-namespace Colibri\Annotations;
+namespace Subapp\Annotations;
 
 /**
  * Interface ReaderInterface
- * @package Colibri\Annotations
+ * @package Subapp\Annotations
  */
 interface ReaderInterface
 {

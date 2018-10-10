@@ -1,8 +1,8 @@
 <?php
 
-namespace Colibri\Annotations;
+namespace Subapp\Annotations;
 
-use Colibri\Lexer\AbstractLexer;
+use Subapp\Lexer\AbstractLexer;
 
 /**
  * Class DocLexer

@@ -1,12 +1,12 @@
 <?php
 
-namespace Colibri\Annotations;
+namespace Subapp\Annotations;
 
-use Colibri\Cache\Pool\CacheItemPool;
+use Subapp\Cache\Pool\CacheItemPool;
 
 /**
  * Class CachedReader
- * @package Colibri\Annotations
+ * @package Subapp\Annotations
  */
 class CachedReader extends Reader
 {

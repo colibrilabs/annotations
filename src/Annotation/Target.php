@@ -1,10 +1,10 @@
 <?php
 
-namespace Colibri\Annotations\Annotation;
+namespace Subapp\Annotations\Annotation;
 
 /**
  * Class Target
- * @package Colibri\Annotations\Annotation
+ * @package Subapp\Annotations\Annotation
  * @Annotation()
  */
 final class Target

@@ -2,8 +2,8 @@
 
 namespace A\B\C;
 
-use Colibri\Annotations\Annotation\Property;
-use Colibri\Annotations\Annotation\Target;
+use Subapp\Annotations\Annotation\Property;
+use Subapp\Annotations\Annotation\Target;
 
 
 /**

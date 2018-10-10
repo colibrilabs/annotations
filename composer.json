@@ -18,6 +18,6 @@
     "subapp/collection": "~0.2"
   },
   "autoload": {
-    "psr-4": { "Colibri\\Annotations\\": "src" }
+    "psr-4": { "Subapp\\Annotations\\": "src" }
   }
 }
