@@ -2,7 +2,7 @@
 
 namespace Subapp\Annotations;
 
-use Subapp\Collection\ArrayCollection;
+use Subapp\Collection\Collection as ArrayCollection;
 
 /**
  * Class StaticCollection
