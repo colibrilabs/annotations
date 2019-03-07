@@ -15,7 +15,7 @@
     "subapp/lexer": "~1.5",
     "subapp/loader": "~1.5",
     "subapp/cache": "~1.0",
-    "subapp/collection": "~1.1"
+    "subapp/collection": "~1.4"
   },
   "autoload": {
     "psr-4": { "Subapp\\Annotations\\": "src" }
