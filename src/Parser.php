@@ -553,14 +553,14 @@ class Parser
      * @param array $token
      * @throws LexerException
      */
-    protected function syntaxError($expect, array $token = [])
+    protected function syntaxError($expect, $token = null)
     {
         $token = empty($token) ? $this->lexer->getNext() : $token;
         $position = $token->getPosition();
         
         throw new LexerException(sprintf(
             "Syntax error. Expect %s got '%s' at position %d in context %s",
-            $this->lexer->getLiteral($expect), $token['token'], $position, $this->getContext()
+            $this->lexer->getLiteral($expect), $token->getToken(), $position, $this->getContext()
         ));
     }
     
