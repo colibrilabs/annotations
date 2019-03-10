@@ -59,7 +59,7 @@ class DocLexer extends AbstractLexer
      */
     public function __construct($input)
     {
-        $this->setInput($input);
+        $this->tokenize($input);
     }
     
     /**

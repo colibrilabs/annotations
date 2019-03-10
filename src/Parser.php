@@ -152,7 +152,7 @@ class Parser
      */
     public function parse($input, $context = null)
     {
-        $this->lexer->setInput(trim($input, '/'));
+        $this->lexer->tokenize(trim($input, '/'));
         $this->context = $context;
         
         return $this->parseAnnotations();
@@ -168,7 +168,7 @@ class Parser
         
         do {
             // Skip to next @ if it exist
-            if ($this->lexer->token['type'] !== DocLexer::T_AT) {
+            if ($this->lexer->token->getType() !== DocLexer::T_AT) {
                 continue;
             }
             
@@ -193,7 +193,7 @@ class Parser
     {
         $this->toToken(DocLexer::T_IDENTIFIER);
         
-        $identifier = $this->lexer->token['token'];
+        $identifier = $this->lexer->token->getToken();
         $className = $identifier;
         
         if ('\\' !== $identifier[0]) {
@@ -437,7 +437,7 @@ class Parser
     {
         $this->toToken(DocLexer::T_IDENTIFIER);
         
-        $classIdentifier = $this->lexer->token['token'];
+        $classIdentifier = $this->lexer['token']->getToken();
         
         if (strpos($classIdentifier, '::')) {
             list($className, $identifierName) = explode('::', $classIdentifier);
