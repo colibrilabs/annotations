@@ -113,7 +113,7 @@ class DocLexer extends AbstractLexer
             $type = $this->map[$chars];
         } else {
             if ($chars[0] === '\'' || $chars[0] === '"') {
-                $token->setToken(trim($token, '\'"'));
+                $token->setToken(trim($chars, '\'"'));
                 $type = static::T_STRING;
             } elseif (ctype_alpha($chars[0]) || '_' === $chars[0] || '\\' === $chars[0]) {
                 $type = static::T_IDENTIFIER;
