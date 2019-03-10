@@ -9,10 +9,10 @@ namespace Subapp\Annotations\Annotation;
  */
 final class Stub
 {
-  
-  /**
-   * @var string
-   */
-  public $instead;
-  
+    
+    /**
+     * @var string
+     */
+    public $instead;
+    
 }

@@ -1,219 +1,51 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "cbd96580910d5c1be7950b9920e8acdc",
-    "content-hash": "3520311b465d9586a484476121c423e2",
+    "content-hash": "9367a81a85d9653c35cf811bc4261394",
     "packages": [
         {
-            "name": "colibriphp/cache",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/colibriphp/cache.git",
-                "reference": "4bd9647f2ebbf12b9faf1529f889a8a71689c403"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/colibriphp/cache/zipball/4bd9647f2ebbf12b9faf1529f889a8a71689c403",
-                "reference": "4bd9647f2ebbf12b9faf1529f889a8a71689c403",
-                "shasum": ""
-            },
-            "require": {
-                "league/flysystem": "^1.0",
-                "php": ">=5.6",
-                "predis/predis": "~1.0",
-                "psr/cache": "~1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Subapp\\Cache\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ivan Hontarenko",
-                    "email": "stewie.dev@gmail.com",
-                    "homepage": "http://fux7.com/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Subapp Cache Component",
-            "keywords": [
-                "cache",
-                "colibri cache",
-                "php cache",
-                "psr-6"
-            ],
-            "time": "2017-05-13 09:18:33"
-        },
-        {
-            "name": "colibriphp/collection",
-            "version": "v0.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/colibriphp/collection.git",
-                "reference": "ed56fcf2de8101b4151ae3972dfe7cda404948f4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/colibriphp/collection/zipball/ed56fcf2de8101b4151ae3972dfe7cda404948f4",
-                "reference": "ed56fcf2de8101b4151ae3972dfe7cda404948f4",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Subapp\\Collection\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ivan Hontarenko",
-                    "email": "stewie.dev@gmail.com"
-                }
-            ],
-            "description": "Collection Library",
-            "keywords": [
-                "collection",
-                "php collection"
-            ],
-            "time": "2017-05-05 12:09:42"
-        },
-        {
-            "name": "colibriphp/lexer",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/colibriphp/lexer.git",
-                "reference": "12a481500aa1ef677a7483daca0981587157a428"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/colibriphp/lexer/zipball/12a481500aa1ef677a7483daca0981587157a428",
-                "reference": "12a481500aa1ef677a7483daca0981587157a428",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Subapp\\Lexer\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ivan Hontarenko",
-                    "email": "stewie.dev@gmail.com"
-                }
-            ],
-            "description": "Abstract Lexer",
-            "keywords": [
-                "lexer"
-            ],
-            "time": "2017-05-19 08:09:30"
-        },
-        {
-            "name": "colibriphp/loader",
-            "version": "v0.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/colibriphp/loader.git",
-                "reference": "88ffb774f6248ab0cd64ef94dc6c36f3a50026f1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/colibriphp/loader/zipball/88ffb774f6248ab0cd64ef94dc6c36f3a50026f1",
-                "reference": "88ffb774f6248ab0cd64ef94dc6c36f3a50026f1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Subapp\\Loader\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ivan Hontarenko",
-                    "email": "stewie.dev@gmail.com"
-                }
-            ],
-            "description": "Universal Autoloader",
-            "keywords": [
-                "autoloader",
-                "loader",
-                "php autoloader",
-                "php loader"
-            ],
-            "time": "2017-05-12 11:05:31"
-        },
-        {
             "name": "league/flysystem",
-            "version": "1.0.40",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "3828f0b24e2c1918bb362d57a53205d6dc8fde61"
+                "reference": "0a342db3a10cb31862e83d550f67c2d087825467"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/3828f0b24e2c1918bb362d57a53205d6dc8fde61",
-                "reference": "3828f0b24e2c1918bb362d57a53205d6dc8fde61",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/0a342db3a10cb31862e83d550f67c2d087825467",
+                "reference": "0a342db3a10cb31862e83d550f67c2d087825467",
                 "shasum": ""
             },
             "require": {
+                "ext-fileinfo": "*",
                 "php": ">=5.5.9"
             },
             "conflict": {
                 "league/flysystem-sftp": "<1.0.6"
             },
             "require-dev": {
-                "ext-fileinfo": "*",
-                "mockery/mockery": "~0.9",
-                "phpspec/phpspec": "^2.2",
-                "phpunit/phpunit": "~4.8"
+                "phpspec/phpspec": "^3.4",
+                "phpunit/phpunit": "^5.7.10"
             },
             "suggest": {
                 "ext-fileinfo": "Required for MimeType",
+                "ext-ftp": "Allows you to use FTP server storage",
+                "ext-openssl": "Allows you to use FTPS server storage",
                 "league/flysystem-aws-s3-v2": "Allows you to use S3 storage with AWS SDK v2",
                 "league/flysystem-aws-s3-v3": "Allows you to use S3 storage with AWS SDK v3",
                 "league/flysystem-azure": "Allows you to use Windows Azure Blob storage",
                 "league/flysystem-cached-adapter": "Flysystem adapter decorator for metadata caching",
-                "league/flysystem-copy": "Allows you to use Copy.com storage",
                 "league/flysystem-eventable-filesystem": "Allows you to use EventableFilesystem",
                 "league/flysystem-rackspace": "Allows you to use Rackspace Cloud Files",
                 "league/flysystem-sftp": "Allows you to use SFTP server storage via phpseclib",
                 "league/flysystem-webdav": "Allows you to use WebDAV storage",
                 "league/flysystem-ziparchive": "Allows you to use ZipArchive adapter",
-                "spatie/flysystem-dropbox": "Allows you to use Dropbox storage"
+                "spatie/flysystem-dropbox": "Allows you to use Dropbox storage",
+                "srmklive/flysystem-dropbox-v2": "Allows you to use Dropbox storage for PHP 5 applications"
             },
             "type": "library",
             "extra": {
@@ -256,20 +88,20 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2017-04-28 10:15:08"
+            "time": "2019-02-14T07:18:57+00:00"
         },
         {
             "name": "predis/predis",
-            "version": "v1.1.1",
+            "version": "v1.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis.git",
-                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
+                "reference": "111d100ee389d624036b46b35ed0c9ac59c71313"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
-                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/111d100ee389d624036b46b35ed0c9ac59c71313",
+                "reference": "111d100ee389d624036b46b35ed0c9ac59c71313",
                 "shasum": ""
             },
             "require": {
@@ -306,20 +138,20 @@
                 "predis",
                 "redis"
             ],
-            "time": "2016-06-16 16:22:20"
+            "time": "2017-07-12T14:39:17+00:00"
         },
         {
             "name": "psr/cache",
-            "version": "1.0.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/cache.git",
-                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
+                "reference": "78c5a01ddbf11cf731f1338a4f5aba23b14d5b47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
-                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "url": "https://api.github.com/repos/php-fig/cache/zipball/78c5a01ddbf11cf731f1338a4f5aba23b14d5b47",
+                "reference": "78c5a01ddbf11cf731f1338a4f5aba23b14d5b47",
                 "shasum": ""
             },
             "require": {
@@ -352,12 +184,298 @@
                 "psr",
                 "psr-6"
             ],
-            "time": "2016-08-06 20:24:11"
+            "time": "2016-10-13T14:48:10+00:00"
+        },
+        {
+            "name": "subapp/cache",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/subapp/cache.git",
+                "reference": "9abe88da03f635902b8e50ee4ed511cef60fd3ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/subapp/cache/zipball/9abe88da03f635902b8e50ee4ed511cef60fd3ff",
+                "reference": "9abe88da03f635902b8e50ee4ed511cef60fd3ff",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem": "^1.0",
+                "php": ">=5.6",
+                "predis/predis": "~1.0",
+                "psr/cache": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Subapp\\Cache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Hontarenko",
+                    "email": "ihontarenko@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Subapp Cache Component",
+            "keywords": [
+                "cache",
+                "php cache",
+                "psr-6",
+                "subapp cache"
+            ],
+            "time": "2018-09-18T12:35:59+00:00"
+        },
+        {
+            "name": "subapp/collection",
+            "version": "v1.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/subapp/collection.git",
+                "reference": "a4d2a33d0304dfcfa8934460dca34884a351a99f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/subapp/collection/zipball/a4d2a33d0304dfcfa8934460dca34884a351a99f",
+                "reference": "a4d2a33d0304dfcfa8934460dca34884a351a99f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.6",
+                "symfony/yaml": "4.2.0-BETA2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Subapp\\Collection\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Hontarenko",
+                    "email": "ihontarenko@gmail.com"
+                }
+            ],
+            "description": "Collection Library",
+            "keywords": [
+                "collection",
+                "php collection"
+            ],
+            "time": "2019-03-08T10:36:40+00:00"
+        },
+        {
+            "name": "subapp/lexer",
+            "version": "v2.0.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/subapp/lexer.git",
+                "reference": "2e1edc75b742ea44f604272e4f378cc7469e923b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/subapp/lexer/zipball/2e1edc75b742ea44f604272e4f378cc7469e923b",
+                "reference": "2e1edc75b742ea44f604272e4f378cc7469e923b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Subapp\\Lexer\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Hontarenko",
+                    "email": "stewie.dev@gmail.com"
+                }
+            ],
+            "description": "Abstract Lexer",
+            "keywords": [
+                "lexer"
+            ],
+            "time": "2018-12-06T18:44:50+00:00"
+        },
+        {
+            "name": "subapp/loader",
+            "version": "v1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/subapp/loader.git",
+                "reference": "0004b6976d476b5113bfec8ffb92af3a01008668"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/subapp/loader/zipball/0004b6976d476b5113bfec8ffb92af3a01008668",
+                "reference": "0004b6976d476b5113bfec8ffb92af3a01008668",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Subapp\\Loader\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Hontarenko",
+                    "email": "stewie.dev@gmail.com"
+                }
+            ],
+            "description": "Universal Autoloader",
+            "keywords": [
+                "autoloader",
+                "loader",
+                "php autoloader",
+                "php loader"
+            ],
+            "time": "2018-10-08T12:07:40+00:00"
+        },
+        {
+            "name": "symfony/polyfill-ctype",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-ctype.git",
+                "reference": "82ebae02209c21113908c229e9883c419720738a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/82ebae02209c21113908c229e9883c419720738a",
+                "reference": "82ebae02209c21113908c229e9883c419720738a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "suggest": {
+                "ext-ctype": "For best performance"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.11-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Ctype\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                },
+                {
+                    "name": "Gert de Pagter",
+                    "email": "backendtea@gmail.com"
+                }
+            ],
+            "description": "Symfony polyfill for ctype functions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "ctype",
+                "polyfill",
+                "portable"
+            ],
+            "time": "2019-02-06T07:57:58+00:00"
+        },
+        {
+            "name": "symfony/yaml",
+            "version": "v4.2.0-BETA2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/yaml.git",
+                "reference": "c41175c801e3edfda90f32e292619d10c27103d7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/c41175c801e3edfda90f32e292619d10c27103d7",
+                "reference": "c41175c801e3edfda90f32e292619d10c27103d7",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3",
+                "symfony/polyfill-ctype": "~1.8"
+            },
+            "conflict": {
+                "symfony/console": "<3.4"
+            },
+            "require-dev": {
+                "symfony/console": "~3.4|~4.0"
+            },
+            "suggest": {
+                "symfony/console": "For validating YAML files using the lint command"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Yaml\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Yaml Component",
+            "homepage": "https://symfony.com",
+            "time": "2018-11-11T19:52:12+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,

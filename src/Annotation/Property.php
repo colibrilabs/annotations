@@ -10,16 +10,16 @@ namespace Subapp\Annotations\Annotation;
  */
 final class Property
 {
-  
-  /**
-   * @var string
-   */
-  public $name;
-  
-  /**
-   * @var bool
-   * @Enum({true, false})
-   */
-  public $required = false;
-  
+    
+    /**
+     * @var string
+     */
+    public $name;
+    
+    /**
+     * @var bool
+     * @Enum({true, false})
+     */
+    public $required = false;
+    
 }

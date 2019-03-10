@@ -10,19 +10,19 @@ namespace Subapp\Annotations\Annotation;
  */
 final class Enum
 {
-  
-  /**
-   * @var array
-   */
-  public $values;
-  
-  /**
-   * Enum constructor.
-   * @param array $values
-   */
-  public function __construct(array $values)
-  {
-    $this->values = $values;
-  }
-  
+    
+    /**
+     * @var array
+     */
+    public $values;
+    
+    /**
+     * Enum constructor.
+     * @param array $values
+     */
+    public function __construct(array $values)
+    {
+        $this->values = $values;
+    }
+    
 }

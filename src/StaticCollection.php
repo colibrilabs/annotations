@@ -10,23 +10,23 @@ use Subapp\Collection\Collection as ArrayCollection;
  */
 class StaticCollection extends ArrayCollection
 {
-  
-  /**
-   * @var static[]
-   */
-  protected static $instances;
-  
-  /**
-   * @param string $name
-   * @return static
-   */
-  public static function instance($name)
-  {
-    if (!static::$instances[$name] && !(static::$instances[$name] instanceof static)) {
-      static::$instances[$name] = new static();
+    
+    /**
+     * @var static[]
+     */
+    protected static $instances;
+    
+    /**
+     * @param string $name
+     * @return static
+     */
+    public static function instance($name)
+    {
+        if (!static::$instances[$name] && !(static::$instances[$name] instanceof static)) {
+            static::$instances[$name] = new static();
+        }
+        
+        return static::$instances[$name];
     }
     
-    return static::$instances[$name];
-  }
-  
 }

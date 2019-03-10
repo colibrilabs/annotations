@@ -8,5 +8,5 @@ namespace Subapp\Annotations\Annotation;
  */
 final class Annotation
 {
-  
+
 }

@@ -8,5 +8,5 @@ namespace Subapp\Annotations;
  */
 class AnnotationException extends \Exception
 {
-  
+
 }
