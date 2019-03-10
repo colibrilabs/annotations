@@ -106,17 +106,18 @@ class DocLexer extends AbstractLexer
      */
     protected function completeToken(TokenInterface $token)
     {
-        $type = static::T_UNKNOWN;
+        $type   = static::T_UNKNOWN;
+        $chars  = $token->getToken();
         
-        if (isset($this->map[$token->getToken()])) {
-            $type = $this->map[$token->getToken()];
+        if (isset($this->map[$chars])) {
+            $type = $this->map[$chars];
         } else {
-            if ($token[0] === '\'' || $token[0] === '"') {
+            if ($chars[0] === '\'' || $chars[0] === '"') {
                 $token->setToken(trim($token, '\'"'));
                 $type = static::T_STRING;
-            } elseif (ctype_alpha($token[0]) || '_' === $token[0] || '\\' === $token[0]) {
+            } elseif (ctype_alpha($chars[0]) || '_' === $chars[0] || '\\' === $chars[0]) {
                 $type = static::T_IDENTIFIER;
-            } elseif (is_numeric($token)) {
+            } elseif (is_numeric($chars)) {
                 $type = (strpos($token, '.') === false) ? static::T_INTEGER : static::T_FLOAT;
             }
         }
