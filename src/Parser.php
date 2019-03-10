@@ -300,7 +300,7 @@ class Parser
     {
         $next = $this->lexer->getNext();
         
-        switch ($next['type']) {
+        switch ($next->getType()) {
             
             case DocLexer::T_AT:
                 $this->toToken(DocLexer::T_AT);
