@@ -335,7 +335,7 @@ class Parser
         $this->toToken(DocLexer::T_IDENTIFIER);
         
         $isComparatorNext = $this->lexer->isNextAny([DocLexer::T_EQ, DocLexer::T_COLON]);
-        $this->lexer->backToToken($currentToken['type']);
+        $this->lexer->backToToken($currentToken->getType());
         
         return $isComparatorNext ? $this->parseKeyValue() : $this->parseClassIdentifier();
     }
@@ -348,7 +348,7 @@ class Parser
         $this->toToken(DocLexer::T_IDENTIFIER);
         
         $token = $this->lexer->getToken();
-        $identifier = $token['token'];
+        $identifier = $token->getToken();
         
         $value = new \stdClass();
         
@@ -367,19 +367,16 @@ class Parser
     public function parseScalarValue()
     {
         $token = $this->lexer->getNext();
-        $value = null;
+        $value = $token->getToken();
         
-        $this->toToken($token['type']);
+        $this->toToken($value);
         
-        switch ($token['type']) {
-            case DocLexer::T_STRING:
-                $value = $token['token'];
-                break;
+        switch ($token->getType()) {
             case DocLexer::T_INTEGER:
-                $value = (int)$token['token'];
+                $value = (int)$value;
                 break;
             case DocLexer::T_FLOAT:
-                $value = (float)$token['token'];
+                $value = (float)$value;
                 break;
             case DocLexer::T_BOOLEAN_FALSE:
                 $value = false;
@@ -437,7 +434,7 @@ class Parser
     {
         $this->toToken(DocLexer::T_IDENTIFIER);
         
-        $classIdentifier = $this->lexer['token']->getToken();
+        $classIdentifier = $this->lexer->getToken()->getToken();
         
         if (strpos($classIdentifier, '::')) {
             list($className, $identifierName) = explode('::', $classIdentifier);
@@ -569,7 +566,6 @@ class Parser
     
     /**
      * @param integer $token
-     * @throws LexerException
      */
     protected function toToken($token)
     {
@@ -578,7 +574,6 @@ class Parser
     
     /**
      * @param array|integer[] $tokens
-     * @throws LexerException
      */
     protected function toTokenAny(array $tokens)
     {
