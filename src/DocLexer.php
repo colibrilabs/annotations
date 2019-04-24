@@ -67,8 +67,8 @@ class DocLexer extends AbstractLexer
      */
     function __debugInfo()
     {
-        return array_map(function ($token) {
-            return sprintf('[%s] %s', $token['token'], $this->getLiteral($token['type']));
+        return array_map(function (Token $token) {
+            return sprintf('[%s] %s', $token->getToken(), $this->getLiteral($token->getType()));
         }, $this->getTokens());
     }
     
