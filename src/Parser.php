@@ -367,11 +367,15 @@ class Parser
     public function parseScalarValue()
     {
         $token = $this->lexer->getNext();
+        $type = $token->getType();
         $value = $token->getToken();
+
+        $this->toToken($type);
         
-        $this->toToken($value);
-        
-        switch ($token->getType()) {
+        switch ($type) {
+            case DocLexer::T_STRING:
+                $value = (string)$value;
+                break;
             case DocLexer::T_INTEGER:
                 $value = (int)$value;
                 break;
@@ -559,7 +563,7 @@ class Parser
         $position = $token->getPosition();
         
         throw new LexerException(sprintf(
-            "Syntax error. Expect %s got '%s' at position %d in context %s",
+            "Syntax error. Expect '%s' got '%s' at position %d in context %s",
             $this->lexer->getLiteral($expect), $token->getToken(), $position, $this->getContext()
         ));
     }
